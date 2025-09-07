@@ -16,9 +16,10 @@ import java.util.Random;
 
 public class MainActivity3 extends AppCompatActivity {
 
-    private TextView wordDisplay, resultText;
+    private TextView wordDisplay, resultText, jokerStatus;
     private ImageView headImage, torsoImage, rightArmImage, leftArmImage, leftLegImage, rightLegImage;
     private Button[] letterButtons;
+    private Button jokerButton;
     private String[] cybersecurityWords = {"firewall", "malware", "phishing", "encryption", "hacker", "virus", "trojan", "spyware", "backup", "antivirus"};
     private String[] networksWords = {"proxy", "gateway", "mascara", "router", "switch", "bridge", "hub", "vlan", "firewall", "dns"};
     private String[] fiberOpticsWords = {"cable", "fiber", "signal", "attenuation", "splicing", "connector", "transceiver", "wavelength", "modem", "optical"};
@@ -27,6 +28,8 @@ public class MainActivity3 extends AppCompatActivity {
     private int wrongGuesses;
     private long startTime;
     private boolean gameEnded;
+    private int totalJokers;
+    private int consecutiveCorrect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class MainActivity3 extends AppCompatActivity {
 
         wordDisplay = findViewById(R.id.wordDisplay);
         resultText = findViewById(R.id.resultText);
+        jokerStatus = findViewById(R.id.jokerStatus);
         headImage = findViewById(R.id.headImage);
         torsoImage = findViewById(R.id.torsoImage);
         rightArmImage = findViewById(R.id.rightArmImage);
@@ -52,6 +56,7 @@ public class MainActivity3 extends AppCompatActivity {
                 findViewById(R.id.buttonV), findViewById(R.id.buttonW), findViewById(R.id.buttonX),
                 findViewById(R.id.buttonY), findViewById(R.id.buttonZ)
         };
+        jokerButton = findViewById(R.id.jokerButton);
 
         String theme = getIntent().getStringExtra("theme");
         String[] words = networksWords; // Default
@@ -59,9 +64,13 @@ public class MainActivity3 extends AppCompatActivity {
         else if ("networks".equals(theme)) words = networksWords;
         else if ("fiberOptics".equals(theme)) words = fiberOpticsWords;
 
+        totalJokers = 0;
+        consecutiveCorrect = 0;
         gameEnded = false;
+        updateJokerStatus();
         startGame(words);
         setupLetterButtons();
+        setupJokerButton();
         findViewById(R.id.newGameButton).setOnClickListener(v -> resetGame());
     }
 
@@ -69,7 +78,6 @@ public class MainActivity3 extends AppCompatActivity {
         currentWord = words[new Random().nextInt(words.length)];
         usedLetters = new ArrayList<>();
         wrongGuesses = 0;
-        startTime = System.currentTimeMillis();
         gameEnded = false;
         updateWordDisplay();
         hideHangmanParts();
@@ -99,17 +107,51 @@ public class MainActivity3 extends AppCompatActivity {
         }
     }
 
+    private void setupJokerButton() {
+        jokerButton.setOnClickListener(v -> {
+            if (!gameEnded && totalJokers > 0) {
+                useJoker();
+                totalJokers--;
+                updateJokerStatus();
+            } else if (totalJokers == 0) {
+                Toast.makeText(this, "No tienes comodines disponibles", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void guessLetter(char letter) {
         letter = Character.toLowerCase(letter);
         int buttonIndex = letter - 'a';
         letterButtons[buttonIndex].setEnabled(false);
         if (currentWord.contains(String.valueOf(letter))) {
             usedLetters.add((int)letter);
+            consecutiveCorrect++;
+            if (consecutiveCorrect == 4) {
+                totalJokers++;
+                consecutiveCorrect = 0;
+                Toast.makeText(this, "¡Ganaste un comodín!", Toast.LENGTH_SHORT).show();
+            }
             updateWordDisplay();
         } else {
+            consecutiveCorrect = 0;
             wrongGuesses++;
             showHangmanPart();
             checkLoss();
+        }
+        updateJokerStatus();
+    }
+
+    private void useJoker() {
+        ArrayList<Character> unguessedLetters = new ArrayList<>();
+        for (char c : currentWord.toCharArray()) {
+            if (!usedLetters.contains((int)c)) {
+                unguessedLetters.add(c);
+            }
+        }
+        if (!unguessedLetters.isEmpty()) {
+            char revealed = unguessedLetters.get(new Random().nextInt(unguessedLetters.size()));
+            usedLetters.add((int)revealed);
+            updateWordDisplay();
         }
     }
 
@@ -135,6 +177,10 @@ public class MainActivity3 extends AppCompatActivity {
 
     private void enableLetters() {
         for (Button button : letterButtons) button.setEnabled(true);
+    }
+
+    private void updateJokerStatus() {
+        jokerStatus.setText(totalJokers + "/" + Math.min(consecutiveCorrect, 3));
     }
 
     private void checkWin() {
@@ -167,6 +213,7 @@ public class MainActivity3 extends AppCompatActivity {
 
     private void resetGame() {
         gameEnded = false;
+        startTime = System.currentTimeMillis(); // Reset start time
         String theme = getIntent().getStringExtra("theme");
         String[] words = networksWords; // Default
         if ("cybersecurity".equals(theme)) words = cybersecurityWords;
