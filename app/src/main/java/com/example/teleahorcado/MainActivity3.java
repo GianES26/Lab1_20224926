@@ -38,6 +38,7 @@ public class MainActivity3 extends AppCompatActivity {
     private String playerName;
     private int totalGames;
     private ArrayList<String> gameHistory;
+    private String startDateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class MainActivity3 extends AppCompatActivity {
         gameCompleted = false;
         totalGames = 0;
         gameHistory = new ArrayList<>();
+        startDateTime = new SimpleDateFormat("dd/MM/yyyy – hh:mm a", Locale.getDefault()).format(new Date());
         startTime = System.currentTimeMillis();
         updateJokerStatus();
         startGame(words);
@@ -268,9 +270,14 @@ public class MainActivity3 extends AppCompatActivity {
         } else if (item.getItemId() == R.id.stats) {
             Intent intent = new Intent(MainActivity3.this, MainActivity4.class);
             intent.putExtra("name", playerName);
-            intent.putExtra("startTime", new SimpleDateFormat("dd/MM/yyyy – hh:mm a", Locale.getDefault()).format(new Date()));
+            intent.putExtra("startTime", startDateTime);
             intent.putExtra("totalGames", totalGames);
-            intent.putStringArrayListExtra("gameHistory", gameHistory);
+            ArrayList<String> statsHistory = new ArrayList<>(gameHistory);
+            if (!gameCompleted && !gameEnded) {
+                long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
+                statsHistory.add("Juego " + totalGames + ": En Curso / Tiempo: " + timeTaken + "s");
+            }
+            intent.putStringArrayListExtra("gameHistory", statsHistory);
             startActivity(intent);
             return true;
         }

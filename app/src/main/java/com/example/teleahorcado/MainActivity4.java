@@ -38,8 +38,8 @@ public class MainActivity4 extends AppCompatActivity {
                 } else if (game.contains("Perdió")) {
                     gamesText.append("<font color='#FF0000'>").append(game).append("</font><br>");
                 } else if (game.contains("Canceló")) {
-                    gamesText.append("<font color='#FFFF00'>").append(game).append("</font><br>");
-                } else {
+                    gamesText.append("<font color='#D4A017'>").append(game).append("</font><br>");
+                } else if (game.contains("En Curso")) {
                     gamesText.append("<font color='#000000'>").append(game).append("</font><br>");
                 }
             }
