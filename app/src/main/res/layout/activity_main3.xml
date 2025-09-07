@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity3">
+
+    <TextView
+        android:id="@+id/wordDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="34sp"
+        android:text="A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.084" />
+
+    <ImageView
+        android:id="@+id/antennaBase"
+        android:layout_width="313dp"
+        android:layout_height="209dp"
+        android:src="@drawable/antenna_base"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.237" />
+
+    <ImageView
+        android:id="@+id/headImage"
+        android:layout_width="64dp"
+        android:layout_height="60dp"
+        android:src="@drawable/antenna_head"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.768"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.226"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/torsoImage"
+        android:layout_width="32dp"
+        android:layout_height="81dp"
+        android:src="@drawable/antenna_torso"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.747"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.312"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/rightArmImage"
+        android:layout_width="55dp"
+        android:layout_height="34dp"
+        android:src="@drawable/antenna_right_arm_right_leg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.831"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.304"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/leftArmImage"
+        android:layout_width="55dp"
+        android:layout_height="34dp"
+        android:src="@drawable/antenna_left_arm_left_leg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.704"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.304"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/leftLegImage"
+        android:layout_width="55dp"
+        android:layout_height="34dp"
+        android:src="@drawable/antenna_left_arm_left_leg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.704"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.393"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/rightLegImage"
+        android:layout_width="55dp"
+        android:layout_height="34dp"
+        android:src="@drawable/antenna_right_arm_right_leg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.831"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.394"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/keyboardLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/antennaBase"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/newGameButtonLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/buttonA" android:layout_width="0dp" android:layout_height="wrap_content" android:text="A" android:layout_weight="1" />
+            <Button android:id="@+id/buttonB" android:layout_width="0dp" android:layout_height="wrap_content" android:text="B" android:layout_weight="1" />
+            <Button android:id="@+id/buttonC" android:layout_width="0dp" android:layout_height="wrap_content" android:text="C" android:layout_weight="1" />
+            <Button android:id="@+id/buttonD" android:layout_width="0dp" android:layout_height="wrap_content" android:text="D" android:layout_weight="1" />
+            <Button android:id="@+id/buttonE" android:layout_width="0dp" android:layout_height="wrap_content" android:text="E" android:layout_weight="1" />
+            <Button android:id="@+id/buttonF" android:layout_width="0dp" android:layout_height="wrap_content" android:text="F" android:layout_weight="1" />
+            <Button android:id="@+id/buttonG" android:layout_width="0dp" android:layout_height="wrap_content" android:text="G" android:layout_weight="1" />
+            <Button android:id="@+id/buttonH" android:layout_width="0dp" android:layout_height="wrap_content" android:text="H" android:layout_weight="1" />
+            <Button android:id="@+id/buttonI" android:layout_width="0dp" android:layout_height="wrap_content" android:text="I" android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/buttonJ" android:layout_width="0dp" android:layout_height="wrap_content" android:text="J" android:layout_weight="1" />
+            <Button android:id="@+id/buttonK" android:layout_width="0dp" android:layout_height="wrap_content" android:text="K" android:layout_weight="1" />
+            <Button android:id="@+id/buttonL" android:layout_width="0dp" android:layout_height="wrap_content" android:text="L" android:layout_weight="1" />
+            <Button android:id="@+id/buttonM" android:layout_width="0dp" android:layout_height="wrap_content" android:text="M" android:layout_weight="1" />
+            <Button android:id="@+id/buttonN" android:layout_width="0dp" android:layout_height="wrap_content" android:text="N" android:layout_weight="1" />
+            <Button android:id="@+id/buttonO" android:layout_width="0dp" android:layout_height="wrap_content" android:text="O" android:layout_weight="1" />
+            <Button android:id="@+id/buttonP" android:layout_width="0dp" android:layout_height="wrap_content" android:text="P" android:layout_weight="1" />
+            <Button android:id="@+id/buttonQ" android:layout_width="0dp" android:layout_height="wrap_content" android:text="Q" android:layout_weight="1" />
+            <Button android:id="@+id/buttonR" android:layout_width="0dp" android:layout_height="wrap_content" android:text="R" android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/buttonS" android:layout_width="0dp" android:layout_height="wrap_content" android:text="S" android:layout_weight="1" />
+            <Button android:id="@+id/buttonT" android:layout_width="0dp" android:layout_height="wrap_content" android:text="T" android:layout_weight="1" />
+            <Button android:id="@+id/buttonU" android:layout_width="0dp" android:layout_height="wrap_content" android:text="U" android:layout_weight="1" />
+            <Button android:id="@+id/buttonV" android:layout_width="0dp" android:layout_height="wrap_content" android:text="V" android:layout_weight="1" />
+            <Button android:id="@+id/buttonW" android:layout_width="0dp" android:layout_height="wrap_content" android:text="W" android:layout_weight="1" />
+            <Button android:id="@+id/buttonX" android:layout_width="0dp" android:layout_height="wrap_content" android:text="X" android:layout_weight="1" />
+            <Button android:id="@+id/buttonY" android:layout_width="0dp" android:layout_height="wrap_content" android:text="Y" android:layout_weight="1" />
+            <Button android:id="@+id/buttonZ" android:layout_width="0dp" android:layout_height="wrap_content" android:text="Z" android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/newGameButtonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/newGameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nuevo Juego"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/keyboardLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

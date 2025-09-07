@@ -1,5 +1,6 @@
 package com.example.teleahorcado;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,22 @@ public class MainActivity2 extends AppCompatActivity {
         nameText = findViewById(R.id.nameText);
         String name = getIntent().getStringExtra("name");
         if (name != null) nameText.setText("Bienvenido " + name);
+
+        findViewById(R.id.cybersecurityButton).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
+            intent.putExtra("theme", "cybersecurity");
+            startActivity(intent);
+        });
+        findViewById(R.id.networksButton).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
+            intent.putExtra("theme", "networks");
+            startActivity(intent);
+        });
+        findViewById(R.id.fiberOpticsButton).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
+            intent.putExtra("theme", "fiberOptics");
+            startActivity(intent);
+        });
     }
 
     @Override
