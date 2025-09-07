@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class MainActivity3 extends AppCompatActivity {
 
-    private TextView wordDisplay;
+    private TextView wordDisplay, resultText;
     private ImageView headImage, torsoImage, rightArmImage, leftArmImage, leftLegImage, rightLegImage;
     private Button[] letterButtons;
     private String[] cybersecurityWords = {"firewall", "malware", "phishing", "encryption", "hacker", "virus", "trojan", "spyware", "backup", "antivirus"};
@@ -26,6 +26,7 @@ public class MainActivity3 extends AppCompatActivity {
     private ArrayList<Integer> usedLetters;
     private int wrongGuesses;
     private long startTime;
+    private boolean gameEnded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class MainActivity3 extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
 
         wordDisplay = findViewById(R.id.wordDisplay);
+        resultText = findViewById(R.id.resultText);
         headImage = findViewById(R.id.headImage);
         torsoImage = findViewById(R.id.torsoImage);
         rightArmImage = findViewById(R.id.rightArmImage);
@@ -57,6 +59,7 @@ public class MainActivity3 extends AppCompatActivity {
         else if ("networks".equals(theme)) words = networksWords;
         else if ("fiberOptics".equals(theme)) words = fiberOpticsWords;
 
+        gameEnded = false;
         startGame(words);
         setupLetterButtons();
         findViewById(R.id.newGameButton).setOnClickListener(v -> resetGame());
@@ -67,9 +70,11 @@ public class MainActivity3 extends AppCompatActivity {
         usedLetters = new ArrayList<>();
         wrongGuesses = 0;
         startTime = System.currentTimeMillis();
+        gameEnded = false;
         updateWordDisplay();
         hideHangmanParts();
         enableLetters();
+        resultText.setText("");
     }
 
     private void updateWordDisplay() {
@@ -86,7 +91,11 @@ public class MainActivity3 extends AppCompatActivity {
             int letter = 'A' + i;
             letterButtons[i].setText(String.valueOf((char)letter));
             final int finalI = i;
-            letterButtons[i].setOnClickListener(v -> guessLetter((char)('A' + finalI)));
+            letterButtons[i].setOnClickListener(v -> {
+                if (!gameEnded) {
+                    guessLetter((char)('A' + finalI));
+                }
+            });
         }
     }
 
@@ -129,19 +138,35 @@ public class MainActivity3 extends AppCompatActivity {
     }
 
     private void checkWin() {
-        if (wordDisplay.getText().toString().replace(" ", "").equals(currentWord)) {
+        if (!gameEnded && wordDisplay.getText().toString().replace(" ", "").equals(currentWord)) {
             long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
-            Toast.makeText(this, "¡Ganaste! Tiempo: " + timeTaken + "s", Toast.LENGTH_LONG).show();
+            resultText.setText("Ganó / Tiempo: " + timeTaken + "s");
+            resultText.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+            gameEnded = true;
+            disableLetters();
         }
     }
 
     private void checkLoss() {
-        if (wrongGuesses == 6) {
-            Toast.makeText(this, "¡Perdiste! Palabra: " + currentWord, Toast.LENGTH_LONG).show();
+        if (!gameEnded && wrongGuesses == 6) {
+            long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
+            resultText.setText("Perdió / Tiempo: " + timeTaken + "s");
+            resultText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            gameEnded = true;
+            disableLetters();
+        }
+    }
+
+    private void disableLetters() {
+        for (Button button : letterButtons) {
+            if (button.isEnabled()) {
+                button.setEnabled(false);
+            }
         }
     }
 
     private void resetGame() {
+        gameEnded = false;
         String theme = getIntent().getStringExtra("theme");
         String[] words = networksWords; // Default
         if ("cybersecurity".equals(theme)) words = cybersecurityWords;
