@@ -36,9 +36,6 @@ public class MainActivity3 extends AppCompatActivity {
     private int consecutiveCorrect;
     private boolean gameCompleted;
     private String playerName;
-    private int totalGames;
-    private ArrayList<String> gameHistory;
-    private String startDateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +75,6 @@ public class MainActivity3 extends AppCompatActivity {
         consecutiveCorrect = 0;
         gameEnded = false;
         gameCompleted = false;
-        totalGames = 0;
-        gameHistory = new ArrayList<>();
-        startDateTime = new SimpleDateFormat("dd/MM/yyyy – hh:mm a", Locale.getDefault()).format(new Date());
         startTime = System.currentTimeMillis();
         updateJokerStatus();
         startGame(words);
@@ -89,7 +83,7 @@ public class MainActivity3 extends AppCompatActivity {
         findViewById(R.id.newGameButton).setOnClickListener(v -> {
             if (!gameCompleted) {
                 long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
-                gameHistory.add("Juego " + totalGames + ": Canceló / Tiempo: " + timeTaken + "s");
+                MainActivity.gameHistory.add("Juego " + MainActivity.totalGames + ": Canceló / Tiempo: " + timeTaken + "s");
             }
             resetGame();
         });
@@ -101,7 +95,7 @@ public class MainActivity3 extends AppCompatActivity {
         wrongGuesses = 0;
         gameEnded = false;
         gameCompleted = false;
-        totalGames++;
+        MainActivity.totalGames++;
         startTime = System.currentTimeMillis(); // Reset start time
         updateWordDisplay();
         hideHangmanParts();
@@ -215,7 +209,7 @@ public class MainActivity3 extends AppCompatActivity {
             gameEnded = true;
             gameCompleted = true;
             long endTime = (System.currentTimeMillis() - startTime) / 1000;
-            gameHistory.add("Juego " + totalGames + ": Ganó / Tiempo: " + endTime + "s");
+            MainActivity.gameHistory.add("Juego " + MainActivity.totalGames + ": Ganó / Tiempo: " + endTime + "s");
             disableLetters();
         }
     }
@@ -227,7 +221,7 @@ public class MainActivity3 extends AppCompatActivity {
             resultText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             gameEnded = true;
             gameCompleted = true;
-            gameHistory.add("Juego " + totalGames + ": Perdió / Tiempo: " + timeTaken + "s");
+            MainActivity.gameHistory.add("Juego " + MainActivity.totalGames + ": Perdió / Tiempo: " + timeTaken + "s");
             disableLetters();
         }
     }
@@ -263,19 +257,19 @@ public class MainActivity3 extends AppCompatActivity {
         if (item.getItemId() == R.id.back) {
             if (!gameCompleted) {
                 long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
-                gameHistory.add("Juego " + totalGames + ": Canceló / Tiempo: " + timeTaken + "s");
+                MainActivity.gameHistory.add("Juego " + MainActivity.totalGames + ": Canceló / Tiempo: " + timeTaken + "s");
             }
             finish();
             return true;
         } else if (item.getItemId() == R.id.stats) {
             Intent intent = new Intent(MainActivity3.this, MainActivity4.class);
             intent.putExtra("name", playerName);
-            intent.putExtra("startTime", startDateTime);
-            intent.putExtra("totalGames", totalGames);
-            ArrayList<String> statsHistory = new ArrayList<>(gameHistory);
+            intent.putExtra("startTime", MainActivity.startDateTime);
+            intent.putExtra("totalGames", MainActivity.totalGames);
+            java.util.ArrayList<String> statsHistory = new java.util.ArrayList<>(MainActivity.gameHistory);
             if (!gameCompleted && !gameEnded) {
                 long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
-                statsHistory.add("Juego " + totalGames + ": En Curso / Tiempo: " + timeTaken + "s");
+                statsHistory.add("Juego " + MainActivity.totalGames + ": En Curso / Tiempo: " + timeTaken + "s");
             }
             intent.putStringArrayListExtra("gameHistory", statsHistory);
             startActivity(intent);

@@ -17,7 +17,7 @@
         <activity
             android:name=".MainActivity3"
             android:exported="false"
-            android:parentActivityName=".MainActivity2" />
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -30,7 +30,7 @@
         <activity
             android:name=".MainActivity2"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            />
     </application>
 
 </manifest>

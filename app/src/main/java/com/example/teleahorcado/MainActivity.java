@@ -21,6 +21,11 @@ public class MainActivity extends AppCompatActivity {
     private Button playButton;
     private TextView title;
 
+    public static String playerName;
+    public static int totalGames = 0;
+    public static java.util.ArrayList<String> gameHistory = new java.util.ArrayList<>();
+    public static String startDateTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +39,14 @@ public class MainActivity extends AppCompatActivity {
         playButton.setOnClickListener(v -> {
             String name = editTextName.getText().toString().trim();
             if (!name.isEmpty()) {
+                if (playerName == null || !playerName.equals(name)) {
+                    playerName = name;
+                    totalGames = 0;
+                    gameHistory.clear();
+                    startDateTime = new java.text.SimpleDateFormat("dd/MM/yyyy – hh:mm a", java.util.Locale.getDefault()).format(new java.util.Date());
+                }
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                intent.putExtra("name", name);
+                intent.putExtra("name", playerName);
                 startActivity(intent);
             } else {
                 Toast.makeText(this, "Ingresa un nombre", Toast.LENGTH_SHORT).show();

@@ -66,10 +66,15 @@ public class MainActivity2 extends AppCompatActivity {
             return true;
         } else if (item.getItemId() == R.id.stats) {
             Intent intent = new Intent(MainActivity2.this, MainActivity4.class);
-            intent.putExtra("name", savedName);
-            intent.putExtra("startTime", new java.text.SimpleDateFormat("dd/MM/yyyy – hh:mm a", java.util.Locale.getDefault()).format(new java.util.Date()));
-            intent.putExtra("totalGames", 0); // No games yet
-            intent.putStringArrayListExtra("gameHistory", new java.util.ArrayList<>());
+            intent.putExtra("name", MainActivity.playerName);
+            intent.putExtra("startTime", MainActivity.startDateTime);
+            intent.putExtra("totalGames", MainActivity.totalGames);
+            java.util.ArrayList<String> statsHistory = new java.util.ArrayList<>(MainActivity.gameHistory);
+            if (MainActivity.totalGames > 0 && !MainActivity.gameHistory.isEmpty()) {
+                intent.putStringArrayListExtra("gameHistory", statsHistory);
+            } else {
+                intent.putStringArrayListExtra("gameHistory", new java.util.ArrayList<>());
+            }
             startActivity(intent);
             return true;
         }
