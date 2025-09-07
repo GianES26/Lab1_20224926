@@ -6,4 +6,9 @@
         android:title="Regresar"
         android:icon="@android:drawable/ic_menu_revert"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/stats"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="Ver perfil y estadísticas"
+        app:showAsAction="ifRoom" />
 </menu>

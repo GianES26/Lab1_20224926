@@ -1,5 +1,6 @@
 package com.example.teleahorcado;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +12,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity3 extends AppCompatActivity {
@@ -30,6 +34,10 @@ public class MainActivity3 extends AppCompatActivity {
     private boolean gameEnded;
     private int totalJokers;
     private int consecutiveCorrect;
+    private boolean gameCompleted;
+    private String playerName;
+    private int totalGames;
+    private ArrayList<String> gameHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,7 @@ public class MainActivity3 extends AppCompatActivity {
         };
         jokerButton = findViewById(R.id.jokerButton);
 
+        playerName = getIntent().getStringExtra("name");
         String theme = getIntent().getStringExtra("theme");
         String[] words = networksWords; // Default
         if ("cybersecurity".equals(theme)) words = cybersecurityWords;
@@ -67,11 +76,21 @@ public class MainActivity3 extends AppCompatActivity {
         totalJokers = 0;
         consecutiveCorrect = 0;
         gameEnded = false;
+        gameCompleted = false;
+        totalGames = 0;
+        gameHistory = new ArrayList<>();
+        startTime = System.currentTimeMillis();
         updateJokerStatus();
         startGame(words);
         setupLetterButtons();
         setupJokerButton();
-        findViewById(R.id.newGameButton).setOnClickListener(v -> resetGame());
+        findViewById(R.id.newGameButton).setOnClickListener(v -> {
+            if (!gameCompleted) {
+                long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
+                gameHistory.add("Juego " + totalGames + ": Canceló / Tiempo: " + timeTaken + "s");
+            }
+            resetGame();
+        });
     }
 
     private void startGame(String[] words) {
@@ -79,6 +98,9 @@ public class MainActivity3 extends AppCompatActivity {
         usedLetters = new ArrayList<>();
         wrongGuesses = 0;
         gameEnded = false;
+        gameCompleted = false;
+        totalGames++;
+        startTime = System.currentTimeMillis(); // Reset start time
         updateWordDisplay();
         hideHangmanParts();
         enableLetters();
@@ -189,6 +211,9 @@ public class MainActivity3 extends AppCompatActivity {
             resultText.setText("Ganó / Tiempo: " + timeTaken + "s");
             resultText.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
             gameEnded = true;
+            gameCompleted = true;
+            long endTime = (System.currentTimeMillis() - startTime) / 1000;
+            gameHistory.add("Juego " + totalGames + ": Ganó / Tiempo: " + endTime + "s");
             disableLetters();
         }
     }
@@ -199,6 +224,8 @@ public class MainActivity3 extends AppCompatActivity {
             resultText.setText("Perdió / Tiempo: " + timeTaken + "s");
             resultText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             gameEnded = true;
+            gameCompleted = true;
+            gameHistory.add("Juego " + totalGames + ": Perdió / Tiempo: " + timeTaken + "s");
             disableLetters();
         }
     }
@@ -213,6 +240,7 @@ public class MainActivity3 extends AppCompatActivity {
 
     private void resetGame() {
         gameEnded = false;
+        gameCompleted = false;
         startTime = System.currentTimeMillis(); // Reset start time
         String theme = getIntent().getStringExtra("theme");
         String[] words = networksWords; // Default
@@ -231,7 +259,19 @@ public class MainActivity3 extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.back) {
+            if (!gameCompleted) {
+                long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
+                gameHistory.add("Juego " + totalGames + ": Canceló / Tiempo: " + timeTaken + "s");
+            }
             finish();
+            return true;
+        } else if (item.getItemId() == R.id.stats) {
+            Intent intent = new Intent(MainActivity3.this, MainActivity4.class);
+            intent.putExtra("name", playerName);
+            intent.putExtra("startTime", new SimpleDateFormat("dd/MM/yyyy – hh:mm a", Locale.getDefault()).format(new Date()));
+            intent.putExtra("totalGames", totalGames);
+            intent.putStringArrayListExtra("gameHistory", gameHistory);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
